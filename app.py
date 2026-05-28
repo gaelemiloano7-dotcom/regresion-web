@@ -16,19 +16,23 @@ modelo.fit(X, y)
 def inicio():
     return render_template('index.html')
 
-@app.route('/predecir', methods=['POST'])
+@app.route('/predecir', methods=['GET', 'POST'])
 def predecir():
 
-    publicidad = float(request.form['publicidad'])
+    if request.method == 'POST':
 
-    prediccion = modelo.predict([[publicidad]])
+        publicidad = float(request.form['publicidad'])
 
-    resultado = round(prediccion[0], 2)
+        prediccion = modelo.predict([[publicidad]])
 
-    return render_template(
-        'index.html',
-        resultado=resultado
-    )
+        resultado = round(prediccion[0], 2)
+
+        return render_template(
+            'index.html',
+            resultado=resultado
+        )
+
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
